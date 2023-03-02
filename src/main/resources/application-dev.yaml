@@ -1,0 +1,29 @@
+spring:
+  data:
+    mongodb:
+      authentication-database: admin
+      database: ktln-ecommerce
+      host: localhost
+      port: 27017
+      username: rootuser
+      password: rootpass
+      auto-index-creation: true
+
+#Email
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: socialnetwork99.me@gmail.com
+    password: hzmcigtmifldgalp
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+#Swagger
+springdoc:
+  swagger-ui:
+    path=/swagger-ui:
+      html: /swagger-ui.html

@@ -7,18 +7,16 @@ import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.validation.constraints.NotNull;
-@Document(collection = "product_manufacturer")
+@Document(collection = "payment_method")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Manufacturer {
+public class PaymentMethod {
     @Id
-    private String id;
-    @NotNull
+    private Long id;
     private String name;
     private String slug;
-    private String desc;
-    private String image;
+    private Boolean isEnable = true;
+
 }

@@ -1,6 +1,7 @@
 package com.example.kltn.models;
 
 
+import com.example.kltn.constants.Constants;
 import com.example.kltn.constants.TokenType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
@@ -9,6 +10,7 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -33,12 +35,14 @@ public class User {
     private String avatar;
     private String provider;
 
-    private List<Address> addresses;
-    private List<VerificationToken> tokens;
+    private List<Address> addresses = new ArrayList<>();
+    private List<VerificationToken> tokens = new ArrayList<>();
 
 
     @Getter
     @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class Address {
         private String address;
         private boolean idDefault;

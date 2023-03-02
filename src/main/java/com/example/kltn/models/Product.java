@@ -4,7 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -19,7 +21,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Product {
-    @Id
     private String id;
     private String name; // example: iPhone 14 Pro Max 256GB
     private String slug;
@@ -30,6 +31,8 @@ public class Product {
     private int view = 0;
     private boolean enable = true;
     private Double installment;
+    private List<GroupSpecification> specifications;
+    @DocumentReference
     private List<ProductOption> productOptions;
     @DocumentReference
     private Category category;
@@ -37,20 +40,27 @@ public class Product {
     private Category subcategory;
     @DocumentReference
     private Manufacturer manufacturer;
-    private List<GroupSpecification> specifications;
+    @DocumentReference
+    private List<Comment> comments;
 
+    @CreatedDate
     private LocalDateTime createAt;
+    @LastModifiedDate
     private LocalDateTime updateAt;
 
+    @Document(collection = "product_option")
     @Getter
     @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class ProductOption {
+        private String id;
         private String optionName; // example: 512GB-Xanh
+        private String fullName;
         private BigDecimal marketPrice;
         private int promotion = 0;
         private String color;
         private String key;
-        private int sold = 0;
         private List<String> pictures;
         private String thumbnail;
 
