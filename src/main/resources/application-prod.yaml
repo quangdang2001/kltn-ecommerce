@@ -1,0 +1,4 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb+srv://quangdang2001:2211@kltnecommerce.ooth2h2.mongodb.net/KLTNEcommerce
