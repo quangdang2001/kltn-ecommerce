@@ -14,7 +14,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @NoArgsConstructor
 public class PaymentMethod {
     @Id
-    private Long id;
+    private String id;
     private String name;
     private String slug;
     private Boolean isEnable = true;

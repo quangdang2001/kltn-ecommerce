@@ -17,6 +17,6 @@ public class SlugGenerator {
                 Math.min(MAX_SLUG_LENGTH, intermediateResult.length()));
     }
 //    public static String slugifyUpdateVersion(String s){
-//
+//        s.replace(s.indexOf("_"))
 //    }
 }

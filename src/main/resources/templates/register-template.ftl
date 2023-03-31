@@ -155,7 +155,7 @@
                         style="padding: 36px 24px 0; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; border-top: 3px solid #d4dadf;">
                         <h1 style="margin: 0; font-size: 32px; font-weight: 700; letter-spacing: -1px; line-height: 48px;">${title}</h1>
                         <p style="margin: 0;">
-                        <h3>Java Group04 account</h3></p>
+                        <h3>KLTN account</h3></p>
                     </td>
                 </tr>
             </table>
@@ -194,11 +194,11 @@
                 <tr>
                     <td align="left" bgcolor="#ffffff"
                         style="padding: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">
-                        <p style="margin: 0;">Do not share this OTP with anyone. Java Group04 takes your account
-                            security very seriously. Java Group04 Customer Service will never ask you to disclose or
-                            verify your Java Group04 password, OTP, credit card, or banking account number. If you
+                        <p style="margin: 0;">Do not share this OTP with anyone. KLTN takes your account
+                            security very seriously. KLTN Customer Service will never ask you to disclose or
+                            verify your KLTN password, OTP, credit card, or banking account number. If you
                             receive a suspicious email with a link to update your account information, do not click on
-                            the link—instead, report the email to Java Group04 for investigation. Thank you!</p>
+                            the link—instead, report the email to KLTN for investigation. Thank you!</p>
                     </td>
                 </tr>
                 <!-- end copy -->
@@ -207,7 +207,7 @@
                 <tr>
                     <td align="left" bgcolor="#ffffff"
                         style="padding: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px; border-bottom: 3px solid #d4dadf">
-                        <p style="margin: 0;">Cheers,<br> Java Group04 Team</p>
+                        <p style="margin: 0;">Cheers,<br> KLTN Team</p>
                     </td>
                 </tr>
                 <!-- end copy -->

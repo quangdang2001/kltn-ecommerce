@@ -8,7 +8,8 @@ public class Constants {
             public static final String OTHER = "other";
         }
         public static class ROLE {
-            public static final String ADMIN = "admin";
+            public static final String ADMINSYS = "adminSystem";
+            public static final String ADMINSHOP = "adminShop";
             public static final String STAFF = "staff";
             public static final String CUSTOMER = "customer";
         }
@@ -34,11 +35,6 @@ public class Constants {
             public static final String MOMO = "momo";
             public static final String PAYPAL = "paypal";
             public static final String ZALO_PAY = "zalopay";
-        }
-        public static class PAYMENT_STATUS {
-            public static final String PENDING = "pending";
-            public static final String PAID = "paid";
-            public static final String CANCELLED = "cancelled";
         }
     }
 }

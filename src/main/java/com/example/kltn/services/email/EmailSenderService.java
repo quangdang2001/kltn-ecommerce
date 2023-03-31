@@ -3,6 +3,7 @@ package com.example.kltn.services.email;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -10,6 +11,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
+
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -27,7 +29,7 @@ public class EmailSenderService {
 
     final String REIGSTER_TEMPLATE = "register-template.ftl";
     final String ORDER_TEMPLATE = "order-template.ftl";
-    final String FROM_EMAIL = "socialnetwork99.me@gmail.com";
+    final String FROM_EMAIL = "quangdang2001.3@gmail.com";
     final String TYPE_EMAIL = "text/html";
 
     public void sendEmail(String toEmail,
@@ -51,7 +53,7 @@ public class EmailSenderService {
         helper.setText(html,true);
         helper.setSubject((String) model.get("subject"));
         // Fix alter
-//        mailSender.send(mimeMailMessage);
+        mailSender.send(mimeMailMessage);
         log.info(Thread.currentThread().getName()+ "- send email");
     }
 }

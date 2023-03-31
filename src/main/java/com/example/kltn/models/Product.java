@@ -1,15 +1,20 @@
 package com.example.kltn.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.Id;
+
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.annotation.Transient;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
-import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.transaction.annotation.Transactional;
+
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -20,9 +25,11 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Product {
     private String id;
     private String name; // example: iPhone 14 Pro Max 256GB
+    @Indexed(unique = true)
     private String slug;
     private String description;
     private String video;
@@ -32,19 +39,19 @@ public class Product {
     private boolean enable = true;
     private Double installment;
     private List<GroupSpecification> specifications;
+
     @DocumentReference
     private List<ProductOption> productOptions;
     @DocumentReference
     private Category category;
     @DocumentReference
-    private Category subcategory;
-    @DocumentReference
     private Manufacturer manufacturer;
     @DocumentReference
     private List<Comment> comments;
-
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @CreatedDate
     private LocalDateTime createAt;
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @LastModifiedDate
     private LocalDateTime updateAt;
 
@@ -53,6 +60,7 @@ public class Product {
     @Setter
     @AllArgsConstructor
     @NoArgsConstructor
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class ProductOption {
         private String id;
         private String optionName; // example: 512GB-Xanh
@@ -60,9 +68,23 @@ public class Product {
         private BigDecimal marketPrice;
         private int promotion = 0;
         private String color;
+        @Indexed(unique = true)
         private String key;
         private List<String> pictures;
         private String thumbnail;
-
     }
+
+    @Getter
+    @Setter
+    @Document(collection = "product_shop")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public static class ProductShop {
+        private String id;
+        @DocumentReference
+        private ProductOption productOption;
+        @DocumentReference
+        private Shop shop;
+        private int quantity = 0;
+    }
+
 }

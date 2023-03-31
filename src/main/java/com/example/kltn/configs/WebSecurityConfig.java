@@ -10,27 +10,25 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-    @Autowired
-    private UserDetailServiceIplm userDetailsService;
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(11);
-    }
+public class WebSecurityConfig {
+    private final AuthenticationProvider authenticationProvider;
 
     private static final String[] WHITE_LIST_URLS = {
             "/api/registerTest",
@@ -57,36 +55,38 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             "/swagger-ui/**",
             "/ws/**"
     };
+    private static final String[] ADMINSYSROLE = {
+            Constants.USER.ROLE.ADMINSYS
+    };
+    private static final String[] ADMINSHOPROLE = {
+            Constants.USER.ROLE.ADMINSYS,
+            Constants.USER.ROLE.ADMINSHOP
+    };
+    private static final String[] CUSTOMERROLE = {
+            Constants.USER.ROLE.ADMINSYS,
+            Constants.USER.ROLE.ADMINSHOP,
+            Constants.USER.ROLE.CUSTOMER
+    };
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-    }
-
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
+    @Bean
+    protected SecurityFilterChain configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
         http.cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues());
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.authorizeRequests().antMatchers(WHITE_LIST_URLS).permitAll();
+        http.authorizeHttpRequests().antMatchers(WHITE_LIST_URLS).permitAll();
 
         http
-                .authorizeRequests()
-                .antMatchers("/api/admin/**").hasAnyAuthority(Constants.USER.ROLE.ADMIN)
-                .antMatchers(HttpMethod.POST,"/api/**").hasAnyAuthority(Constants.USER.ROLE.CUSTOMER, Constants.USER.ROLE.ADMIN)
-                .antMatchers(HttpMethod.PUT,"/api/**").hasAnyAuthority(Constants.USER.ROLE.CUSTOMER, Constants.USER.ROLE.ADMIN)
-                .antMatchers(HttpMethod.DELETE,"/api/**").hasAnyAuthority(Constants.USER.ROLE.CUSTOMER, Constants.USER.ROLE.ADMIN)
+                .authenticationProvider(authenticationProvider)
+                .authorizeHttpRequests()
+                .antMatchers("/api/adminSys/**").hasAnyAuthority(ADMINSYSROLE)
+                .antMatchers("/api/adminShop/**").hasAnyAuthority(ADMINSHOPROLE)
+                .antMatchers(HttpMethod.POST, "/api/**").hasAnyAuthority(CUSTOMERROLE)
+                .antMatchers(HttpMethod.PUT, "/api/**").hasAnyAuthority(CUSTOMERROLE)
+                .antMatchers(HttpMethod.DELETE, "/api/**").hasAnyAuthority(CUSTOMERROLE)
                 .antMatchers(HttpMethod.GET, "/api/**").permitAll();
 
-
         http.addFilterBefore(new UserAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
+        return http.build();
 
     }
-
-    @Bean
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
-
 }
