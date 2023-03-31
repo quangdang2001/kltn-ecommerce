@@ -3,6 +3,7 @@ package com.example.kltn.services.payment.async;
 import com.example.kltn.exceptions.OutOfStockException;
 import com.example.kltn.models.Order;
 import com.example.kltn.models.Product;
+import com.example.kltn.models.Shop;
 import com.example.kltn.repos.ProductOptionRepo;
 import com.example.kltn.repos.ProductShopRepo;
 import lombok.RequiredArgsConstructor;
@@ -26,11 +27,12 @@ public class PaymentAsync {
 
     @Async
     @Synchronized
-    public CompletableFuture<Boolean> asyncCheckAndUpdateQuantityProduct(List<Order.OrderItem> orderItems, String shopId) {
+    public CompletableFuture<Boolean> asyncCheckAndUpdateQuantityProduct(List<Order.OrderItem> orderItems, Shop shop) {
         log.info("async check and update quantity start");
-        List<Product.ProductShop> productShops = productShopRepo.findProductShopByProductOptions_IdAndShop_Id(
-                orderItems.stream().map(orderItem -> orderItem.getProductOption()).collect(Collectors.toList()),
-                shopId
+        List<Product.ProductShop> productShops = productShopRepo.findProductShopByShopAndProductOptionIn(
+                shop,
+                orderItems.stream().map(Order.OrderItem::getProductOption).collect(Collectors.toList())
+
         );
         productShops.forEach(productShop -> {
             int quantity = orderItems.stream()

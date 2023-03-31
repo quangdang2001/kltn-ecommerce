@@ -39,10 +39,11 @@ public class Order {
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @LastModifiedDate
     private LocalDateTime updateAt;
-    private User orderUser;
     private String paypalToken;
     private OrderDetail orderdetail;
     private List<OrderItem> orderItems;
+    @DocumentReference
+    private User orderUser;
     @DocumentReference
     private PaymentMethod paymentMethod;
 

@@ -45,7 +45,7 @@ public abstract class PaymentProcess {
     protected final EmailSenderService emailSenderService;
     protected final OrderRepo orderRepo;
     protected final PaymentAsync paymentAsync;
-
+    protected final ShopRepo shopRepo;
 
     protected static final String URL_PAYPAL_SUCCESS = "pay/success";
     protected static final String URL_PAYPAL_CANCEL = "pay/cancel";
@@ -58,6 +58,7 @@ public abstract class PaymentProcess {
         String userId = UserUtil.getIdCurrentUser();
 
         User user = userRepo.findById(userId).orElseThrow();
+        Shop shopSeleted = shopRepo.findById(orderReq.getShopSelectedId()).orElseThrow();
         PaymentMethod payment = paymentMethodRepo.findPaymentMethodByName(orderReq.getPaymentMethod());
         if (payment == null) {
             throw new NotFoundException("Payment Method Not Found.");
@@ -68,8 +69,8 @@ public abstract class PaymentProcess {
         orders.setOrderUser(user);
 
         Order.OrderDetail orderDetail = modelMapper.map(orderReq, Order.OrderDetail.class);
-        var orderItems = getOrderItems(orderReq);
-
+        var orderItems = getOrderItems(orderReq, shopSeleted);
+        orderDetail.setShopSelected(shopSeleted);
         orderDetail.setTotalPrice(BigDecimal.valueOf(orderItems.stream().mapToInt(i -> i.getPrice().intValue()).sum()));
         orderDetail.setQuantity(orderItems.stream().mapToInt(Order.OrderItem::getQuantity).sum());
 
@@ -81,13 +82,12 @@ public abstract class PaymentProcess {
     }
 
     @Transactional
-    List<Order.OrderItem> getOrderItems(OrderReq orderReq) {
+    List<Order.OrderItem> getOrderItems(OrderReq orderReq, Shop shop) {
         List<Order.OrderItem> orderItems = new ArrayList<>();
-        List<String> listIdPrOp = new ArrayList<>();
-        orderReq.getItems().forEach(item -> {
-            listIdPrOp.add(item.getProductOptionId());
-        });
-        List<Product.ProductShop> productShops = productShopRepo.findProductShopByProductOptions_IdAndShop_Id(listIdPrOp, orderReq.getShopSelectedId());
+        var listPrOp = productOptionRepo.findProductOptionByIdIn(
+                orderReq.getItems().stream().map(OrderReq.Items::getProductOptionId).collect(Collectors.toList())
+        );
+        List<Product.ProductShop> productShops = productShopRepo.findProductShopByShopAndProductOptionIn(shop, listPrOp);
         if (productShops.size() == 0)
             throw new NotFoundException("Product Shop Not Found");
         var itemReqs = orderReq.getItems();
@@ -111,9 +111,9 @@ public abstract class PaymentProcess {
     public void returnProduct(Order order) {
         List<Order.OrderItem> orderItems = order.getOrderItems();
         Shop shop = order.getOrderdetail().getShopSelected();
-        List<Product.ProductShop> productShops = productShopRepo.findProductShopByProductOption_IdInAndShop_Id(
-                orderItems.stream().map(orderItem -> orderItem.getProductOption().getId()).collect(Collectors.toList()),
-                shop.getId()
+        List<Product.ProductShop> productShops = productShopRepo.findProductShopByShopAndProductOptionIn(
+                order.getOrderdetail().getShopSelected(),
+                orderItems.stream().map(Order.OrderItem::getProductOption).collect(Collectors.toList())
         );
 
         productShops.forEach(productShop -> {

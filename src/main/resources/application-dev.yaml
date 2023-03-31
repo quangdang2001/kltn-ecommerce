@@ -5,10 +5,11 @@ spring:
       database: ktln-ecommerce
       host: localhost
       port: 27017
-      username: rootuser
+#      username:
+#      password:
       auto-index-creation: true
 
-#Email      password: rootpass
+#Email
   #
   mail:
     host: smtp.gmail.com

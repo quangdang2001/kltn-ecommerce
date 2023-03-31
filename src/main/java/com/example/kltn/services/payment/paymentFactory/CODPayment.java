@@ -28,8 +28,8 @@ import java.util.concurrent.CompletableFuture;
 public class CODPayment extends PaymentProcess {
 
 
-    public CODPayment(UserRepo userRepo, PaymentMethodRepo paymentMethodRepo, ModelMapper modelMapper, ProductOptionRepo productOptionRepo, ProductShopRepo productShopRepo, EmailSenderService emailSenderService, OrderRepo orderRepo, PaymentAsync paymentAsync) {
-        super(userRepo, paymentMethodRepo, modelMapper, productOptionRepo, productShopRepo, emailSenderService, orderRepo, paymentAsync);
+    public CODPayment(UserRepo userRepo, PaymentMethodRepo paymentMethodRepo, ModelMapper modelMapper, ProductOptionRepo productOptionRepo, ProductShopRepo productShopRepo, EmailSenderService emailSenderService, OrderRepo orderRepo, PaymentAsync paymentAsync, ShopRepo shopRepo) {
+        super(userRepo, paymentMethodRepo, modelMapper, productOptionRepo, productShopRepo, emailSenderService, orderRepo, paymentAsync, shopRepo);
     }
 
     @Override
@@ -47,12 +47,13 @@ public class CODPayment extends PaymentProcess {
         if (orders.getState().equals(Constants.ORDER.STATUS.CONFIRMED))
             throw new PaymentException(400, "Order has been confirmed");
         CompletableFuture<Boolean> check = paymentAsync.asyncCheckAndUpdateQuantityProduct(orders.getOrderItems()
-                , orders.getOrderdetail().getShopSelected().getId());
+                , orders.getOrderdetail().getShopSelected());
         orders.setState(Constants.ORDER.STATUS.CONFIRMED);
 
         check.exceptionally(ex -> {
             throw new PaymentException(409, "Payment failed");
         });
+        orderRepo.save(orders);
         sendEmailOrder(orders);
         return orders.getId();
     }

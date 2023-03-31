@@ -23,9 +23,5 @@ public interface OrderRepo extends MongoRepository<Order, String> {
                     "}")
     List<Order> findHistoryOrderUser(String userId);
 
-    @Override
-    @Query(value = "{'id':  ?0}",fields = "{'orderUser':  0}")
-    Optional<Order> findById(String orderId);
-
 
 }

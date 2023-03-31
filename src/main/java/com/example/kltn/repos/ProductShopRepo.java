@@ -1,6 +1,7 @@
 package com.example.kltn.repos;
 
 import com.example.kltn.models.Product;
+import com.example.kltn.models.Shop;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
@@ -13,7 +14,6 @@ public interface ProductShopRepo extends MongoRepository<Product.ProductShop, St
 
     Product.ProductShop findProductShopByProductOption_IdAndShop_Id(String productOptionId, String shopId);
 
-    @Query(value = "{'productOption':  {$in : ?0}, 'shop': {'_id':  ?1}}")
-    List<Product.ProductShop> findProductShopByProductOptions_IdAndShop_Id(List<String> productOptionId, String shopId);
+    List<Product.ProductShop> findProductShopByShopAndProductOptionIn(Shop shop, List<Product.ProductOption> productOptions);
 
 }
