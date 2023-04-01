@@ -123,11 +123,6 @@ public class UserSrvIplm implements UserSrv {
 
             Map<String, String> token = new HashMap<>();
             token.put("access_token", access_token);
-            token.put("userId", user.getUsers().getId().toString());
-            token.put("email", user.getUsers().getEmail());
-            token.put("name", user.getUsers().getName());
-            token.put("avatar", user.getUsers().getAvatar());
-            token.put("role", role);
             return token;
         } catch (AuthenticationException e) {
             throw new AuthException(403, "Access deny");
@@ -174,8 +169,11 @@ public class UserSrvIplm implements UserSrv {
                 && List.of(Constants.USER.GENDER.MALE, Constants.USER.GENDER.FEMALE).contains(userReq.getGender())){
             user.setGender(userReq.getGender());
         }
-        if (userReq.getName() != null){
-            user.setName(userReq.getName());
+        if (userReq.getFirstName() != null){
+            user.setFirstName(userReq.getFirstName());
+        }
+        if (userReq.getLastName() != null){
+            user.setLastName(userReq.getLastName());
         }
         if (userReq.getPhone() != null){
             user.setPhone(userReq.getPhone());

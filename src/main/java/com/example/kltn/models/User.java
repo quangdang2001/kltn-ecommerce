@@ -35,7 +35,8 @@ public class User {
     @Indexed(unique = true)
     private String phone;
     private String password;
-    private String name;
+    private String firstName;
+    private String lastName;
     private String role;
     private Boolean enable = false;
     private String avatar;

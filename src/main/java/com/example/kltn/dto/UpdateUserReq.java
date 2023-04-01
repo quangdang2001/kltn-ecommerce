@@ -8,5 +8,6 @@ import java.util.List;
 public class UpdateUserReq {
     private String gender;
     private String phone;
-    private String name;
+    private String firstName;
+    private String lastName;
 }

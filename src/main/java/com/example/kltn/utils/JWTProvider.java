@@ -16,7 +16,12 @@ public class JWTProvider {
                 .withSubject(user.getId().toString())
                 .withExpiresAt(new Date(System.currentTimeMillis()+10*60*1000*6*24*15))
                 .withIssuer(request.getRequestURL().toString())
+                .withClaim("email",user.getRole())
+                .withClaim("firstName",user.getRole())
+                .withClaim("lastName",user.getRole())
+                .withClaim("avt",user.getRole())
                 .withClaim("role",user.getRole())
+                .withClaim("id",user.getRole())
                 .sign(algorithm);
     }
 }

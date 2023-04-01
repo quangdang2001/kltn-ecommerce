@@ -3,7 +3,7 @@ spring:
     mongodb:
       authentication-database: admin
       database: KLTNEcommerce
-      host: kltnecommerce.gviefid.mongodb.net
+      host: localhost
       port: 27017
       username: root
       password: 2211
