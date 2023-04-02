@@ -1,5 +1,6 @@
 package com.example.kltn.services.common.iplm;
 
+import com.example.kltn.dto.SearchProductResp;
 import com.example.kltn.exceptions.NotFoundException;
 import com.example.kltn.models.Product;
 import com.example.kltn.models.Shop;
@@ -52,6 +53,11 @@ public class ProductSrvIplm implements ProductSrv {
 
     @Override
     public Product updateProduct(Product productReq) {
+        return null;
+    }
+
+    @Override
+    public List<SearchProductResp> getProductByKeyword(String keyword, String manufacturerId, String categoryId, String subCategoryId, int page, int size) {
         return null;
     }
 

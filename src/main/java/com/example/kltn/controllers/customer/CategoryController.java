@@ -35,21 +35,21 @@ public class CategoryController {
 
     // Add Category
     //requied Name
-    @PostMapping("/admin/category")
+    @PostMapping("/adminSys/category")
     public ResponseEntity<?> saveCategory(@RequestBody Category categoryDTO){
         Category categorySave =  categoryService.save(categoryDTO);
         return ResponseEntity.ok(new ResponseDTO(true,"Success",categorySave));
     }
 
     // Update category
-    @PutMapping("/admin/category")
+    @PutMapping("/adminSys/category")
     public ResponseEntity<?> updateCategory(@RequestBody Category categoryDTO){
         categoryService.updateCategory(categoryDTO);
         return ResponseEntity.ok(new ResponseDTO(true,"Success",null));
     }
 
     //Delete category
-    @DeleteMapping("/admin/category/{id}")
+    @DeleteMapping("/adminSys/category/{id}")
     public ResponseEntity<?> deleteCategory(@PathVariable String id){
        categoryService.deleteCategory(id);
        return ResponseEntity.ok(new ResponseDTO(true,"Success",null));

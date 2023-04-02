@@ -30,13 +30,13 @@ public class ManufactureController {
                     .body(new ResponseDTO(false,"Manufacturer ID not exits",null));
     }
 
-    @PostMapping("/admin/manufacturer")
+    @PostMapping("/adminSys/manufacturer")
     public ResponseEntity<?> saveManufacturer(@RequestBody Manufacturer manufacturer){
         Manufacturer manufacturerSave =  manufacturerService.save(manufacturer);
         return ResponseEntity.ok(new ResponseDTO(true,"Success",manufacturerSave));
     }
 
-    @PutMapping("/admin/manufacturer")
+    @PutMapping("/adminSys/manufacturer")
     public ResponseEntity<?> updateManufacturer(@RequestBody Manufacturer manufacturer){
         Manufacturer manufacturerUpdate = manufacturerService.updateManufacturer(manufacturer);
         if (manufacturerUpdate!= null)
@@ -46,7 +46,7 @@ public class ManufactureController {
                     .body(new ResponseDTO(false,"Manufacturer ID not exits",null));
     }
 
-    @DeleteMapping("/admin/manufacturer/{id}")
+    @DeleteMapping("/adminSys/manufacturer/{id}")
     public ResponseEntity<?> deleteManufacturer(@PathVariable String id){
         boolean check = manufacturerService.deleteManufacturer(id);
         if (check){
