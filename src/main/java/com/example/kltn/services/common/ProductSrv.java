@@ -1,5 +1,6 @@
 package com.example.kltn.services.common;
 
+import com.example.kltn.dto.ProductSearchReq;
 import com.example.kltn.dto.SearchProductResp;
 import com.example.kltn.models.Product;
 import com.example.kltn.models.Shop;
@@ -12,7 +13,7 @@ public interface ProductSrv {
     Product updateProduct(Product productReq);
 
 
-    List<SearchProductResp> getProductByKeyword(String keyword, String manufacturerId, String categoryId, String subCategoryId, int page, int size);
+    List<Product> getProductByKeyword(ProductSearchReq searchReq);
 //
 //    List<SearchProductResp> search(String keyword, int page, int size);
 

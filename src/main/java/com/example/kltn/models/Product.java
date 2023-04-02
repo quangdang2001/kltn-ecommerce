@@ -1,11 +1,15 @@
 package com.example.kltn.models;
 
+import com.example.kltn.utils.MoneyConvert;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.annotation.CreatedDate;
 
 import org.springframework.data.annotation.LastModifiedDate;
@@ -16,6 +20,7 @@ import org.springframework.data.mongodb.core.mapping.DocumentReference;
 import org.springframework.transaction.annotation.Transactional;
 
 
+import javax.annotation.PostConstruct;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -26,6 +31,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@Slf4j
 public class Product {
     private String id;
     private String name; // example: iPhone 14 Pro Max 256GB
@@ -40,11 +46,14 @@ public class Product {
     private Double installment;
     private List<GroupSpecification> specifications;
 
+    private BigDecimal bestPrice;
+    private int bestPromotion;
+
     @DocumentReference
     private List<ProductOption> productOptions;
-    @DocumentReference
+    @DocumentReference(lookup = "{'slug': ?#{#target}}")
     private Category category;
-    @DocumentReference
+    @DocumentReference(lookup = "{'slug': ?#{#target}}")
     private Manufacturer manufacturer;
     @DocumentReference
     private List<Comment> comments;
@@ -72,6 +81,13 @@ public class Product {
         private String key;
         private List<String> pictures;
         private String thumbnail;
+
+        @Transient
+        private BigDecimal salePrice;
+
+        @JsonIgnore
+        @DocumentReference
+        private Product product;
     }
 
     @Getter

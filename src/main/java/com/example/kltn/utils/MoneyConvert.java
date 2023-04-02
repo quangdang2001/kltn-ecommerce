@@ -16,7 +16,7 @@ public class MoneyConvert {
         // Get discount rate
         BigDecimal sale = BigDecimal.valueOf((100 - promotion) / 100);
         // Get price after discount
-        sale = (price.multiply(sale)).setScale(0, RoundingMode.UNNECESSARY);
+        sale = (price.multiply(sale)).setScale(0, RoundingMode.HALF_DOWN);
         return sale;
     }
 

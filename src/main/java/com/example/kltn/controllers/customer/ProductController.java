@@ -1,5 +1,6 @@
 package com.example.kltn.controllers.customer;
 
+import com.example.kltn.dto.ProductSearchReq;
 import com.example.kltn.dto.ResponseDTO;
 import com.example.kltn.services.common.ProductSrv;
 import com.example.kltn.services.common.iplm.ShopSrvIplm;
@@ -32,5 +33,11 @@ public class ProductController {
     private ResponseEntity<?> getShopNearBy(@RequestParam String productOptionId){
         var shopNears = shopIplm.findShopNearBy(productOptionId);
         return ResponseEntity.ok(new ResponseDTO(true, "Success", shopNears));
+    }
+
+    @GetMapping("/product/search")
+    private ResponseEntity<?> searchProduct(@RequestBody ProductSearchReq productSearchReq){
+        var data = productService.getProductByKeyword(productSearchReq);
+        return ResponseEntity.ok(new ResponseDTO(true, "Success", data));
     }
 }

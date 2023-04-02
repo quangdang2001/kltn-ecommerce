@@ -1,11 +1,15 @@
 package com.example.kltn.dto;
 
 import com.example.kltn.models.Product;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.mongodb.core.index.Indexed;
 
 import java.math.BigDecimal;
 import java.util.List;
 
+@Getter
+@Setter
 public class SearchProductResp {
     private String id;
     private String name;
