@@ -4,6 +4,7 @@ package com.example.kltn.models;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,6 +20,7 @@ import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import java.util.List;
@@ -34,17 +36,17 @@ public class Order {
     private String state;
     private LocalDateTime deliveryDate;
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
-    @CreatedDate
-    private LocalDateTime createAt;
+    private LocalDateTime createAt = LocalDateTime.now();
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @LastModifiedDate
     private LocalDateTime updateAt;
     private String paypalToken;
     private OrderDetail orderdetail;
+
     private List<OrderItem> orderItems;
     @DocumentReference
     private User orderUser;
-    @DocumentReference
+
     private PaymentMethod paymentMethod;
 
     @Getter
@@ -52,7 +54,6 @@ public class Order {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class OrderDetail {
-        @DocumentReference
         private Shop shopSelected;
         private String deliveryAddress;
         private String discountCode;
@@ -74,5 +75,11 @@ public class Order {
         private BigDecimal price = BigDecimal.ZERO;
         @DocumentReference
         private Product.ProductOption productOption;
+        @DocumentReference
+        private Category category;
+        @DocumentReference
+        private Manufacturer manufacturer;
+        @DocumentReference
+        private Product product;
     }
 }

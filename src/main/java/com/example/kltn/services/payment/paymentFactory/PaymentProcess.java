@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
+import org.bson.types.ObjectId;
 import org.modelmapper.ModelMapper;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,6 +47,7 @@ public abstract class PaymentProcess {
     protected final OrderRepo orderRepo;
     protected final PaymentAsync paymentAsync;
     protected final ShopRepo shopRepo;
+    protected final ProductRepo productRepo;
 
     protected static final String URL_PAYPAL_SUCCESS = "pay/success";
     protected static final String URL_PAYPAL_CANCEL = "pay/cancel";
@@ -103,7 +105,9 @@ public abstract class PaymentProcess {
             });
         });
         orderReq.getItems().forEach((item) -> {
-            orderItems.add(new Order.OrderItem(item.getQuantity(), item.getPrice(), item.getProductOption()));
+            var product =productRepo.findProductByProductOptionId(new ObjectId(item.getProductOptionId())).get(0);
+            orderItems.add(new Order.OrderItem(item.getQuantity(), item.getPrice(), item.getProductOption(),
+                    product.getCategory(),product.getManufacturer(),product));
         });
         return orderItems;
     }

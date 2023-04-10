@@ -20,6 +20,10 @@ public class MoneyConvert {
         return sale;
     }
 
+    public static long multiBigDecimal(BigDecimal price, int quantity){
+        return price.multiply(BigDecimal.valueOf(quantity)).longValue();
+    }
+
 //    public static double getConversionRate(String from, String to) throws IOException {
 //        String url_str = String.format("https://api.exchangerate.host/convert?from=%s&to=%s",from,to);
 //

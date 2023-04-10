@@ -42,9 +42,12 @@ public class Product {
     private double rate = 0;
     private int countRate = 0;
     private int view = 0;
+    private String thumbnail;
+    private String saleBanner;
     private boolean enable = true;
     private Double installment;
     private List<GroupSpecification> specifications;
+    private List<Parameter> parameters;
 
     private BigDecimal bestPrice;
     private int bestPromotion;
@@ -80,9 +83,6 @@ public class Product {
         @Indexed(unique = true)
         private String key;
         private List<String> pictures;
-        private String thumbnail;
-
-        @Transient
         private BigDecimal salePrice;
 
         @JsonIgnore
@@ -101,6 +101,13 @@ public class Product {
         @DocumentReference
         private Shop shop;
         private int quantity = 0;
+    }
+
+    @Getter
+    @Setter
+    public static class Parameter {
+        private String value;
+        private String key;
     }
 
 }

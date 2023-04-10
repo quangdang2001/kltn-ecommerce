@@ -28,8 +28,8 @@ import java.util.concurrent.CompletableFuture;
 public class CODPayment extends PaymentProcess {
 
 
-    public CODPayment(UserRepo userRepo, PaymentMethodRepo paymentMethodRepo, ModelMapper modelMapper, ProductOptionRepo productOptionRepo, ProductShopRepo productShopRepo, EmailSenderService emailSenderService, OrderRepo orderRepo, PaymentAsync paymentAsync, ShopRepo shopRepo) {
-        super(userRepo, paymentMethodRepo, modelMapper, productOptionRepo, productShopRepo, emailSenderService, orderRepo, paymentAsync, shopRepo);
+    public CODPayment(UserRepo userRepo, PaymentMethodRepo paymentMethodRepo, ModelMapper modelMapper, ProductOptionRepo productOptionRepo, ProductShopRepo productShopRepo, EmailSenderService emailSenderService, OrderRepo orderRepo, PaymentAsync paymentAsync, ShopRepo shopRepo, ProductRepo productRepo) {
+        super(userRepo, paymentMethodRepo, modelMapper, productOptionRepo, productShopRepo, emailSenderService, orderRepo, paymentAsync, shopRepo, productRepo);
     }
 
     @Override
