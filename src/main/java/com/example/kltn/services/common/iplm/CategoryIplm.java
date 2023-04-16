@@ -1,7 +1,9 @@
 package com.example.kltn.services.common.iplm;
 
 
+import com.example.kltn.dto.CategoryReq;
 import com.example.kltn.exceptions.AppException;
+import com.example.kltn.exceptions.NotFoundException;
 import com.example.kltn.models.Category;
 import com.example.kltn.repos.CategoryRepo;
 import com.example.kltn.services.common.CategorySrv;
@@ -30,12 +32,23 @@ public class CategoryIplm implements CategorySrv {
     }
 
     @Override
-    public Category save(Category category) {
-        if (category.getSubcategories()!=null && category.getSubcategories().size() > 0){
-            category.getSubcategories().forEach(cate -> cate.setSlug(SlugGenerator.slugify(cate.getCategoryName())));
-            categoryRepo.saveAll(category.getSubcategories());
+    public Category save(CategoryReq categoryReq) {
+        Category category = new Category();
+        category.setCategoryName(categoryReq.getCategoryName());
+        category.setSlug(SlugGenerator.slugify(categoryReq.getCategoryName()));
+
+        if (categoryReq.getRelatedCategory() != null && !categoryReq.getRelatedCategory().equals("")){
+            var cate = categoryRepo.findById(categoryReq.getRelatedCategory()).orElseThrow(
+                    ()-> new NotFoundException("Not found related category.")
+            );
+            cate.getSubcategories().add(category);
+            category.setLevel(category.getLevel()+1);
+            var resp = categoryRepo.save(category);
+            categoryRepo.save(cate);
+
+            return resp;
         }
-        category.setSlug(SlugGenerator.slugify(category.getCategoryName()));
+
         return categoryRepo.save(category);
     }
 

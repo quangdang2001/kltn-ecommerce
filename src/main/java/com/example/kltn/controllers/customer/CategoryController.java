@@ -1,5 +1,6 @@
 package com.example.kltn.controllers.customer;
 
+import com.example.kltn.dto.CategoryReq;
 import com.example.kltn.dto.ResponseDTO;
 import com.example.kltn.models.Category;
 import com.example.kltn.services.common.CategorySrv;
@@ -36,15 +37,15 @@ public class CategoryController {
     // Add Category
     //requied Name
     @PostMapping("/adminSys/category")
-    public ResponseEntity<?> saveCategory(@RequestBody Category categoryDTO){
-        Category categorySave =  categoryService.save(categoryDTO);
+    public ResponseEntity<?> saveCategory(@RequestBody CategoryReq categoryReq){
+        Category categorySave =  categoryService.save(categoryReq);
         return ResponseEntity.ok(new ResponseDTO(true,"Success",categorySave));
     }
 
     // Update category
     @PutMapping("/adminSys/category")
-    public ResponseEntity<?> updateCategory(@RequestBody Category categoryDTO){
-        categoryService.updateCategory(categoryDTO);
+    public ResponseEntity<?> updateCategory(@RequestBody Category categoryReq){
+        categoryService.updateCategory(categoryReq);
         return ResponseEntity.ok(new ResponseDTO(true,"Success",null));
     }
 

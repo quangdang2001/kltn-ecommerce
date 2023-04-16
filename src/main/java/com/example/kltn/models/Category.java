@@ -27,7 +27,7 @@ public class Category {
     private String categoryName;
     @Indexed(unique = true)
     private String slug;
-    private int level;
+    private int level = 0;
     @DocumentReference(lazy = true)
     List<Category> subcategories;
 }
