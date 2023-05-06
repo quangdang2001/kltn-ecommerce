@@ -4,6 +4,7 @@ import lombok.*;
 import org.springframework.lang.Nullable;
 
 @Data
+@AllArgsConstructor
 public class ProductSearchReq {
     @Nullable
     private String keyword;
