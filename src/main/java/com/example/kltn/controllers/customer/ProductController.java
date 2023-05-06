@@ -36,9 +36,9 @@ public class ProductController {
     }
 
     @GetMapping("/product/search")
-    private ResponseEntity<?> searchProduct(@RequestParam String keyword,
-                                            @RequestParam String cate,
-                                            @RequestParam String manu,
+    private ResponseEntity<?> searchProduct(@RequestParam(defaultValue = "") String keyword,
+                                            @RequestParam(defaultValue = "") String cate,
+                                            @RequestParam(defaultValue = "") String manu,
                                             @RequestParam(defaultValue = "des") String orderBy,
                                             @RequestParam(defaultValue = "bestPrice") String sortBy,
                                             @RequestParam(defaultValue = "0") String page,
