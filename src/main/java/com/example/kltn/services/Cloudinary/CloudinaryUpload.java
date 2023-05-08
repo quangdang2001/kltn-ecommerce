@@ -10,6 +10,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 
@@ -54,6 +56,18 @@ public class CloudinaryUpload {
     public void deleteImage(String urlImage) throws IOException {
         cloudinary().uploader().destroy("tgdd/" + getPublicId(urlImage)
                 , ObjectUtils.asMap("resource_type", "image"));
+    }
+
+    public List<String> uploadImages(List<MultipartFile> files){
+        var imgs = new ArrayList<String>();
+        files.forEach(file -> {
+            try {
+                imgs.add(uploadImage(file,null));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        return imgs;
     }
 
 }
